@@ -6,6 +6,8 @@
 
 [获取屏幕共享流](./audio-and-video-capture/getDisplayMedia.html)
 
+[获取设备信息]
+
 ## 音视频录制
 
 

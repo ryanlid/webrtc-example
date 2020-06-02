@@ -18,6 +18,9 @@ const promise = navigator.mediaDevices.getDisplayMedia(constraints);
 
 通过 `enumerateDevices` 获取设备信息
 
+
+[获取屏幕共享流](./enumerateDevices.html)
+
 ```js
 const promise = navigator.mediaDevices.enumerateDevices();
 ```

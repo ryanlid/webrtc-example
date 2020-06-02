@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>获取设备信息</title>
+  </head>
+  <body>
+    <div>
+      AudioSource
+      <select id="audioSource"></select>
+    </div>
+    <div>
+      AudioOutput
+      <select id="audioOutput"></select>
+    </div>
+    <div>
+      VideoSource
+      <select id="videoSource"></select>
+    </div>
+
+    <div>
+      <video id="videoplay" autoplay playsinline controls muted></video>
+    </div>
+
+    <script>
+      const videoplay = document.querySelector('#videoplay');
+
+      const audioSource = document.querySelector('select#audioSource');
+      const audioOutput = document.querySelector('select#audioOutput');
+      const videoSource = document.querySelector('select#videoSource');
+
+      function gotUserStream(stream) {
+        videoplay.srcObject = stream;
+        return navigator.mediaDevices.enumerateDevices();
+      }
+      // 获取设备信息
+      function getDevices(deviceInfos) {
+        deviceInfos.forEach((deviceInfo) => {
+          let option = document.createElement('option');
+
+          option.text = deviceInfo.label;
+          option.value = deviceInfo.deviceId;
+
+          if (deviceInfo.kind === 'audioinput') {
+            audioSource.append(option);
+          } else if (deviceInfo.kind === 'audiooutput') {
+            audioOutput.append(option);
+          } else if (deviceInfo.kind === 'videoinput') {
+            videoSource.append(option);
+          }
+        });
+      }
+
+      function handleError(err) {
+        console.log(err);
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.log('getUserMedia is not supported!');
+      } else {
+        let constraints = {
+          video: true,
+          audio: false,
+        };
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then(gotUserStream)
+          .then(getDevices)
+          .catch(handleError);
+      }
+    </script>
+  </body>
+</html>
