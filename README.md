@@ -4,6 +4,8 @@
 
 [获取音视频流](./audio-and-video-capture/getUserStream.html)
 
+[获取屏幕共享流](./audio-and-video-capture/getDisplayMedia.html)
+
 ## 音视频录制
 
 

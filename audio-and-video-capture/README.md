@@ -8,6 +8,14 @@
 const promise = navigator.mediaDevices.getUserMedia(constraints);
 ```
 
+通过 `getDisplayMedia` 获取音视频
+
+[获取屏幕共享流](./getDisplayMedia.html)
+
+```js
+const promise = navigator.mediaDevices.getDisplayMedia(constraints);
+```
+
 通过 `enumerateDevices` 获取设备信息
 
 ```js
@@ -67,9 +75,8 @@ const constraints = {
     },
   },
 };
-
 ```
 
 > 适配不同浏览器
-
+>
 > https://webrtc.github.io/adapter/adapter-latest.js

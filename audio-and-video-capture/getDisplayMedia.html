@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>获取屏幕共享流</title>
+    <style>
+      .flex {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>获取屏幕共享流</h1>
+    <div class="flex">
+      <div>
+        <video id="videoplay" autoplay playsinline controls muted></video>
+      </div>
+      <div>
+        <h2>视频信息</h2>
+        <code>
+          <pre id="videoConstaints"></pre>
+        </code>
+      </div>
+    </div>
+
+    <script>
+      const videoplay = document.querySelector('#videoplay');
+      const divVideoConstaints = document.querySelector('#videoConstaints');
+      const divAudioConstaints = document.querySelector('#audioConstaints');
+
+      /**
+       * 获取屏幕共享流
+       *
+       */
+      function getUserStream(stream) {
+        videoplay.srcObject = stream;
+        console.log(stream.getVideoTracks());
+        console.log(stream.getAudioTracks());
+
+        const videoTrack = stream.getVideoTracks()[0];
+        const videoConstaints = videoTrack.getSettings();
+        divVideoConstaints.textContent = JSON.stringify(
+          videoConstaints,
+          null,
+          2
+        );
+
+        return navigator.mediaDevices.enumerateDevices();
+      }
+
+      function handleError(err) {
+        console.log(err);
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+        console.log('getDisplayMedia is not supported!');
+      } else {
+        let constraints = {
+          video: true,
+          audio: true,
+        };
+        navigator.mediaDevices
+          .getDisplayMedia(constraints)
+          .then(getUserStream)
+          .catch(handleError);
+      }
+    </script>
+  </body>
+</html>
