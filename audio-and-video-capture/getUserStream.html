@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .flex {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>获取音视频流</h1>
+    <div class="flex">
+      <div>
+        <video id="videoplay" autoplay playsinline controls muted></video>
+      </div>
+      <div>
+        <h2>视频信息</h2>
+        <code>
+          <pre id="videoConstaints"></pre>
+        </code>
+
+        <h2>音频信息</h2>
+        <code>
+          <pre id="audioConstaints"></pre>
+        </code>
+      </div>
+    </div>
+
+    <script>
+      const videoplay = document.querySelector('#videoplay');
+      const divVideoConstaints = document.querySelector('#videoConstaints');
+      const divAudioConstaints = document.querySelector('#audioConstaints');
+
+      /**
+       * 获取音视频
+       *
+       */
+      function getUserStream(stream) {
+        videoplay.srcObject = stream;
+        console.log(stream.getVideoTracks());
+        console.log(stream.getAudioTracks());
+
+        const videoTrack = stream.getVideoTracks()[0];
+        const videoConstaints = videoTrack.getSettings();
+        divVideoConstaints.textContent = JSON.stringify(
+          videoConstaints,
+          null,
+          2
+        );
+
+        const audioTrack = stream.getAudioTracks()[0];
+        const audioConstaints = audioTrack.getSettings();
+        divAudioConstaints.textContent = JSON.stringify(
+          audioConstaints,
+          null,
+          2
+        );
+
+        return navigator.mediaDevices.enumerateDevices();
+      }
+
+      function handleError(err) {
+        console.log(err);
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.log('getUserMedia is not supported!');
+      } else {
+        let constraints = {
+          video: true,
+          audio: {
+            echoCancellation:true
+          },
+        };
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then(getUserStream)
+          .catch(handleError);
+      }
+    </script>
+  </body>
+</html>
